@@ -57,15 +57,13 @@ const Wishlist = () => {
             <FaTrash className="text-xs" /> Xóa tất cả
           </button>
         </div>
-
-        {/* Grid sản phẩm */}
+        
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
           {wishlist.map((product) => (
             <div
               key={product.id}
               className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm group relative"
             >
-              {/* Nút xóa */}
               <button
                 onClick={() => removeFromWishlist(product.id)}
                 className="absolute top-3 right-3 z-10 w-8 h-8 bg-white dark:bg-gray-700 rounded-full flex items-center justify-center shadow-md hover:bg-red-500 hover:text-white transition"
@@ -73,7 +71,6 @@ const Wishlist = () => {
                 <FaHeart className="text-red-500 group-hover:text-white text-sm" />
               </button>
 
-              {/* Ảnh */}
               <Link to={`/products/${product.id}`}>
                 <div className="overflow-hidden">
                   <img
@@ -84,7 +81,6 @@ const Wishlist = () => {
                 </div>
               </Link>
 
-              {/* Thông tin */}
               <div className="p-3">
                 <Link to={`/products/${product.id}`}>
                   <h3 className="font-semibold text-sm truncate hover:text-primary transition">
@@ -102,7 +98,6 @@ const Wishlist = () => {
                   {Number(product.price).toLocaleString("vi-VN")}đ
                 </p>
 
-                {/* Nút thêm vào giỏ */}
                 <button
                   onClick={() => {
                     addToCart(product, 1);

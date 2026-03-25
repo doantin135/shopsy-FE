@@ -235,7 +235,6 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Buttons */}
             <div className="flex gap-3 flex-wrap mt-2">
               <button
                 onClick={handleAddToCart}
@@ -277,7 +276,7 @@ const ProductDetail = () => {
               </button>
             </div>
 
-            {/* ✅ Nút đánh giá */}
+            
             {user && deliveredOrder && (
               <div className="mt-2">
                 {alreadyReviewed ? (
@@ -304,7 +303,6 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Thông tin thêm */}
             <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 mt-2 space-y-2">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                 <span>🚚</span> Miễn phí vận chuyển đơn trên 500.000đ
@@ -392,14 +390,14 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* ✅ Success message */}
+      
       {successMsg && (
         <div className="fixed top-5 right-5 z-50 bg-green-500 text-white px-5 py-3 rounded-xl shadow-lg">
-          ✅ {successMsg}
+          oke {successMsg}
         </div>
       )}
 
-      {/* ✅ Review Modal */}
+      
       {reviewModal && (
         <ReviewModal
           product={reviewModal.product}

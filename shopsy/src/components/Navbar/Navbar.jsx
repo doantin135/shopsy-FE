@@ -47,10 +47,8 @@ const Navbar = () => {
 
   return (
     <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
-      {/* ── Upper Navbar ── */}
       <div className="bg-primary/40 py-2">
         <div className="container flex justify-between items-center">
-          {/* Logo */}
           <div>
             <Link
               to="/"
@@ -61,9 +59,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Right side */}
           <div className="flex items-center gap-4">
-            {/* Search */}
             <form
               onSubmit={handleSearch}
               className="relative group hidden sm:block"
@@ -83,7 +79,6 @@ const Navbar = () => {
               </button>
             </form>
 
-            {/* Cart */}
             <Link
               to="/cart"
               className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group relative"
@@ -111,10 +106,8 @@ const Navbar = () => {
               )}
             </Link>
 
-            {/* Dark mode */}
             <DarkMode />
 
-            {/* User / Login */}
             {user ? (
               <div className="relative group">
                 {/* Avatar */}
@@ -134,7 +127,6 @@ const Navbar = () => {
                   </span>
                 </div>
 
-                {/* Dropdown */}
                 <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
                   <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
@@ -176,10 +168,9 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ── Lower Navbar ── */}
       <div data-aos="zoom-in" className="flex justify-center">
         <ul className="sm:flex hidden items-center gap-4">
-          {/* ✅ Dùng Link thay <a> để tránh bị mất tag */}
+          
           {Menu.map((data) => (
             <li key={data.id}>
               <Link
@@ -191,7 +182,6 @@ const Navbar = () => {
             </li>
           ))}
 
-          {/* Dropdown */}
           <li className="group relative cursor-pointer">
             <Link to="/" className="flex items-center gap-[2px] py-2">
               Trending Products

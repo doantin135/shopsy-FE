@@ -30,8 +30,6 @@ const Profile = () => {
   const [securityMsg, setSecurityMsg]   = useState({ type: "", text: "" });
 
   const isGoogleUser = user?.providerData?.[0]?.providerId === "google.com";
-
-  // ── Cập nhật tên ──
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
     if (!displayName.trim()) return;
@@ -47,7 +45,6 @@ const Profile = () => {
     }
   };
 
-  // ── Đổi mật khẩu ──
   const handleUpdatePassword = async (e) => {
     e.preventDefault();
     setSecurityMsg({ type: "", text: "" });
@@ -61,7 +58,6 @@ const Profile = () => {
 
     setSecurityLoading(true);
     try {
-      // Xác thực lại trước khi đổi mật khẩu
       const credential = EmailAuthProvider.credential(user.email, currentPass);
       await reauthenticateWithCredential(auth.currentUser, credential);
       await updatePassword(auth.currentUser, newPass);
@@ -92,15 +88,12 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-white py-10">
       <div className="container max-w-3xl">
-
-        {/* ── Profile Header ── */}
         <div className="bg-gradient-to-r from-primary to-secondary rounded-2xl p-6 mb-6 text-white relative overflow-hidden">
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-20 w-24 h-24 bg-white/10 rounded-full translate-y-1/2" />
 
           <div className="relative flex items-center gap-5">
-            {/* Avatar */}
             <div className="relative">
               {user?.photoURL ? (
                 <img
@@ -121,7 +114,6 @@ const Profile = () => {
               )}
             </div>
 
-            {/* Info */}
             <div className="flex-1">
               <h1 className="text-2xl font-bold">{user?.displayName || "Người dùng"}</h1>
               <p className="text-white/70 text-sm mt-0.5">{user?.email}</p>
@@ -132,7 +124,6 @@ const Profile = () => {
               </div>
             </div>
 
-            {/* Logout button */}
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white text-sm px-4 py-2 rounded-full transition"
@@ -159,7 +150,6 @@ const Profile = () => {
           ))}
         </div>
 
-        {/* ── Tab: Thông tin ── */}
         {activeTab === "info" && (
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
             <h2 className="text-lg font-bold mb-5 flex items-center gap-2">
@@ -177,7 +167,6 @@ const Profile = () => {
             )}
 
             <form onSubmit={handleUpdateInfo} className="space-y-4">
-              {/* Tên hiển thị */}
               <div>
                 <label className="block text-sm font-medium mb-1.5">Tên hiển thị</label>
                 <input
@@ -189,7 +178,6 @@ const Profile = () => {
                 />
               </div>
 
-              {/* Email — chỉ đọc */}
               <div>
                 <label className="block text-sm font-medium mb-1.5">Email</label>
                 <input
@@ -232,7 +220,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* ── Tab: Bảo mật ── */}
         {activeTab === "security" && (
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
             <h2 className="text-lg font-bold mb-5 flex items-center gap-2">
@@ -321,7 +308,6 @@ const Profile = () => {
           </div>
         )}
 
-        {/* ── Tab: Đơn hàng — redirect ── */}
         {activeTab === "orders" && (
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm text-center">
             <div className="text-5xl mb-4">📦</div>

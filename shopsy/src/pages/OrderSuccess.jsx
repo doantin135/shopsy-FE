@@ -222,7 +222,6 @@ const OrderSuccess = () => {
           </div>
         )}
 
-        {/* ── Buttons ── */}
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
           <Link
             to="/"

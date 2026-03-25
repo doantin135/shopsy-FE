@@ -18,7 +18,6 @@ const Search = () => {
   const [total, setTotal] = useState(0);
   const [showFilter, setShowFilter] = useState(false);
 
-  // Lấy params từ URL
   const [filters, setFilters] = useState({
     search: searchParams.get("search") || "",
     category_id: searchParams.get("category_id") || "",
@@ -30,14 +29,14 @@ const Search = () => {
     categoryApi.getAll().then((res) => setCategories(res.data.data));
   }, []);
 
-  // Search khi filters thay đổi
+  
   useEffect(() => {
     const params = {};
     if (filters.search) params.search = filters.search;
     if (filters.category_id) params.category_id = filters.category_id;
     if (filters.sort) params.sort = filters.sort;
 
-    // Cập nhật URL
+    
     setSearchParams(params);
 
     setLoading(true);
@@ -70,7 +69,6 @@ const Search = () => {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-white py-10">
       <div className="container">
-        {/* ── Search bar ── */}
         <form onSubmit={handleSearch} className="flex gap-3 mb-8">
           <div className="relative flex-1">
             <input
@@ -99,8 +97,6 @@ const Search = () => {
             <FaFilter className="text-xs" /> Bộ lọc
           </button>
         </form>
-
-        {/* ── Filter panel ── */}
         {showFilter && (
           <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 mb-6 shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -123,7 +119,6 @@ const Search = () => {
                 </select>
               </div>
 
-              {/* Sort */}
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Sắp xếp theo
@@ -139,7 +134,6 @@ const Search = () => {
                 </select>
               </div>
 
-              {/* Clear filter */}
               <div className="flex items-end">
                 {hasFilter && (
                   <button
@@ -153,8 +147,6 @@ const Search = () => {
             </div>
           </div>
         )}
-
-        {/* ── Active filters ── */}
         {hasFilter && (
           <div className="flex items-center gap-2 flex-wrap mb-5">
             <span className="text-sm text-gray-500">Đang lọc:</span>
@@ -186,7 +178,6 @@ const Search = () => {
           </div>
         )}
 
-        {/* ── Result count ── */}
         <div className="flex items-center justify-between mb-5">
           <p className="text-sm text-gray-500">
             {loading ? "Đang tìm..." : `Tìm thấy ${total} sản phẩm`}
@@ -202,7 +193,6 @@ const Search = () => {
           </p>
         </div>
 
-        {/* ── Products grid ── */}
         {loading ? (
           <div className="flex justify-center py-20">
             <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
