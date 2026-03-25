@@ -22,7 +22,6 @@ const Products = ({ products, categories }) => {
   return (
     <div className="mt-14 mb-12">
       <div className="container">
-        {/* Header */}
         <div className="text-center mb-10 max-w-[600px] mx-auto">
           <p data-aos="fade-up" className="text-sm text-primary">
             Top Selling Products for you
@@ -35,7 +34,6 @@ const Products = ({ products, categories }) => {
           </p>
         </div>
 
-        {/* Filter by category */}
         {categories.length > 0 && (
           <div
             data-aos="fade-up"
@@ -67,7 +65,6 @@ const Products = ({ products, categories }) => {
           </div>
         )}
 
-        {/* Products grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 place-items-center gap-5">
           {filtered.length > 0 ? (
             filtered.map((product) => (
@@ -77,7 +74,7 @@ const Products = ({ products, categories }) => {
                 data-aos-delay={product.aosDelay}
                 className="space-y-3 cursor-pointer group relative"
               >
-                {/* ✅ Nút Wishlist */}
+                
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -92,7 +89,7 @@ const Products = ({ products, categories }) => {
                   )}
                 </button>
 
-                {/* Ảnh + Link */}
+                
                 <Link to={`/products/${product.id}`}>
                   <div className="overflow-hidden rounded-md">
                     <img
@@ -132,7 +129,7 @@ const Products = ({ products, categories }) => {
           )}
         </div>
 
-        {/* View all button */}
+        
         <div className="flex justify-center">
           <button className="text-center mt-10 cursor-pointer bg-primary text-white py-1 px-5 rounded-md hover:bg-primary/90 transition">
             View All

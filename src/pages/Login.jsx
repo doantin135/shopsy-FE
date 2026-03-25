@@ -141,7 +141,6 @@ const Login = () => {
   );
 };
 
-// Map Firebase error code → tiếng Việt
 const getErrorMessage = (code) => {
   const map = {
     "auth/user-not-found":       "Email không tồn tại.",

@@ -77,7 +77,7 @@ const OrderHistory = () => {
   };
 
   useEffect(() => {
-    // Chưa đăng nhập → về login
+    
     if (!user) {
       navigate("/login");
       return;
@@ -143,7 +143,6 @@ const OrderHistory = () => {
           </Link>
         </div>
 
-        {/* ── Chưa có đơn hàng ── */}
         {orders.length === 0 ? (
           <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl">
             <div className="text-6xl mb-4">📦</div>
@@ -285,7 +284,7 @@ const OrderHistory = () => {
                             className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
                           >
                             <div className="flex items-center gap-3">
-                              {/* ✅ Hiện ảnh sản phẩm */}
+                              
                               {item.product_image ? (
                                 <img
                                   src={
@@ -359,7 +358,7 @@ const OrderHistory = () => {
       {/* Success message */}
       {successMsg && (
         <div className="fixed top-5 right-5 z-50 bg-green-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
-          ✅ {successMsg}
+          oke {successMsg}
         </div>
       )}
 

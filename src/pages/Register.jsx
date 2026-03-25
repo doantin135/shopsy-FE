@@ -50,8 +50,6 @@ const Register = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8">
-
-          {/* Logo */}
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-primary">Shopsy</h1>
             <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">
@@ -59,7 +57,6 @@ const Register = () => {
             </p>
           </div>
 
-          {/* Error */}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg px-4 py-3 mb-4">
               {error}
@@ -67,7 +64,6 @@ const Register = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Họ và tên
@@ -83,7 +79,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Email
@@ -99,7 +94,6 @@ const Register = () => {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Mật khẩu
@@ -124,7 +118,6 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Xác nhận mật khẩu
@@ -149,14 +142,12 @@ const Register = () => {
             </button>
           </form>
 
-          {/* Divider */}
           <div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
             <span className="text-xs text-gray-400">hoặc</span>
             <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600" />
           </div>
 
-          {/* Google */}
           <button
             onClick={handleGoogle}
             className="w-full flex items-center justify-center gap-3 border border-gray-300 dark:border-gray-600 rounded-lg py-2.5 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition"

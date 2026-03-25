@@ -22,7 +22,7 @@ const Checkout = () => {
 
   const [isOrdered, setIsOrdered] = useState(false);
 
-  // ✅ ép kiểu chắc chắn
+  
   const safeTotalPrice = safePrice(totalPrice);
 
   const shippingFee = safeTotalPrice >= 500000 ? 0 : 30000;
@@ -40,7 +40,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  // 🚀 Fix redirect
+  
   useEffect(() => {
     if (cartItems.length === 0 && !isOrdered) {
       navigate("/cart");

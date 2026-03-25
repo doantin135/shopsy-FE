@@ -52,8 +52,7 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
             ✕
           </button>
         </div>
-
-        {/* Tên sản phẩm */}
+        
         <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
           <span className="text-2xl">📦</span>
           <p className="font-medium text-sm">{product.product_name}</p>
@@ -66,7 +65,6 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* Rating sao */}
           <div className="mb-5">
             <label className="block text-sm font-medium mb-3">
               Chất lượng sản phẩm <span className="text-red-500">*</span>
@@ -101,7 +99,6 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
             </div>
           </div>
 
-          {/* Nhận xét */}
           <div className="mb-5">
             <label className="block text-sm font-medium mb-2">Nhận xét</label>
             <textarea
@@ -117,7 +114,6 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
             </p>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-3">
             <button
               type="submit"
