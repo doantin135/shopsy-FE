@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm 
+  focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400
+  dark:bg-gray-700 dark:border-gray-600 transition;
+}
+
+.input-error {
+  @apply border-red-400 focus:ring-red-400 focus:border-red-400;
+}
