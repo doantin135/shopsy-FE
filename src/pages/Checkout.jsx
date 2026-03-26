@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { orderApi } from "../api/index";
+import { FaClipboardList, FaShoppingBag } from "react-icons/fa";
 
 const getImageUrl = (image) => {
   if (!image) return "https://placehold.co/60x60?text=No+Image";
@@ -22,9 +23,7 @@ const Checkout = () => {
 
   const [isOrdered, setIsOrdered] = useState(false);
 
-  
   const safeTotalPrice = safePrice(totalPrice);
-
   const shippingFee = safeTotalPrice >= 500000 ? 0 : 30000;
   const total = safeTotalPrice + shippingFee;
 
@@ -40,7 +39,6 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  
   useEffect(() => {
     if (cartItems.length === 0 && !isOrdered) {
       navigate("/cart");
@@ -130,12 +128,11 @@ const Checkout = () => {
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border">
 
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                  📋 Thông tin giao hàng
+                  <FaClipboardList className="text-primary" />
+                  Thông tin giao hàng
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-
-                  {/* INPUT COMPONENT */}
                   {[
                     { name: "name", label: "Họ và tên" },
                     { name: "email", label: "Email" },
@@ -162,7 +159,6 @@ const Checkout = () => {
                     </div>
                   ))}
 
-                  {/* ADDRESS */}
                   <div className="sm:col-span-2">
                     <label className="block text-sm font-medium mb-1">
                       Địa chỉ
@@ -190,11 +186,11 @@ const Checkout = () => {
             <div>
               <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md sticky top-24">
 
-                <h2 className="text-lg font-semibold mb-4">
-                  🛍️ Đơn hàng
+                <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <FaShoppingBag className="text-primary" />
+                  Đơn hàng
                 </h2>
 
-                {/* PRODUCT */}
                 <div className="space-y-3 mb-4 max-h-[250px] overflow-y-auto">
                   {cartItems.map((item) => (
                     <div key={item.id} className="flex items-center gap-3">
@@ -222,7 +218,6 @@ const Checkout = () => {
 
                 <hr className="my-4" />
 
-                {/* PRICE */}
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span>Tạm tính</span>
@@ -246,13 +241,13 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* BUTTON */}
                 <button
                   type="submit"
                   disabled={loading || cartItems.length === 0}
-                  className="w-full mt-5 bg-gradient-to-r from-orange-500 to-orange-400 text-white py-3 rounded-full font-semibold hover:scale-105 transition disabled:opacity-60"
+                  className="w-full mt-5 bg-gradient-to-r from-orange-500 to-orange-400 text-white py-3 rounded-full font-semibold hover:scale-105 transition disabled:opacity-60 flex items-center justify-center gap-2"
                 >
-                  {loading ? "Đang xử lý..." : "🛍️ Đặt hàng"}
+                  <FaShoppingBag />
+                  {loading ? "Đang xử lý..." : "Đặt hàng"}
                 </button>
 
               </div>

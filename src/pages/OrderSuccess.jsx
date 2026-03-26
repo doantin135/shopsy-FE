@@ -1,14 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { orderApi } from "../api/index";
-import { FaCheckCircle, FaBox, FaTruck, FaHome, FaReceipt } from "react-icons/fa";
+
+import {
+  FaCheckCircle,
+  FaBox,
+  FaTruck,
+  FaHome,
+  FaReceipt,
+  FaClock,
+  FaCog,
+  FaTimesCircle,
+  FaMoneyBillWave,
+  FaUniversity,
+  FaInfoCircle,
+  FaShoppingBag,
+} from "react-icons/fa";
 
 const statusMap = {
-  pending:    { label: "Chờ xác nhận", color: "text-yellow-500",  bg: "bg-yellow-50",  icon: "⏳" },
-  processing: { label: "Đang xử lý",   color: "text-blue-500",    bg: "bg-blue-50",    icon: "⚙️" },
-  shipped:    { label: "Đang giao",     color: "text-purple-500",  bg: "bg-purple-50",  icon: "🚚" },
-  delivered:  { label: "Đã giao",       color: "text-green-500",   bg: "bg-green-50",   icon: "✅" },
-  cancelled:  { label: "Đã hủy",        color: "text-red-500",     bg: "bg-red-50",     icon: "❌" },
+  pending: {
+    label: "Chờ xác nhận",
+    color: "text-yellow-500",
+    bg: "bg-yellow-50",
+    icon: FaClock,
+  },
+  processing: {
+    label: "Đang xử lý",
+    color: "text-blue-500",
+    bg: "bg-blue-50",
+    icon: FaCog,
+  },
+  shipped: {
+    label: "Đang giao",
+    color: "text-purple-500",
+    bg: "bg-purple-50",
+    icon: FaTruck,
+  },
+  delivered: {
+    label: "Đã giao",
+    color: "text-green-500",
+    bg: "bg-green-50",
+    icon: FaCheckCircle,
+  },
+  cancelled: {
+    label: "Đã hủy",
+    color: "text-red-500",
+    bg: "bg-red-50",
+    icon: FaTimesCircle,
+  },
 };
 
 const getImageUrl = (image) => {
@@ -18,14 +57,18 @@ const getImageUrl = (image) => {
 };
 
 const OrderSuccess = () => {
-  const { id }                = useParams();
-  const [order, setOrder]     = useState(null);
+  const { id } = useParams();
+  const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    orderApi.getById(id)
-      .then((res) => { setOrder(res.data.data); setLoading(false); })
-      .catch(()   => setLoading(false));
+    orderApi
+      .getById(id)
+      .then((res) => {
+        setOrder(res.data.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, [id]);
 
   if (loading) {
@@ -37,64 +80,57 @@ const OrderSuccess = () => {
   }
 
   const sc = statusMap[order?.status] || statusMap.pending;
+  const StatusIcon = sc.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 dark:text-white py-10">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-secondary/5 dark:bg-gray-900 dark:text-white py-10">
       <div className="container max-w-2xl">
-
-        {/* ── Confetti header ── */}
+        {/* SUCCESS HEADER */}
         <div className="text-center mb-8">
-          {/* Icon thành công */}
           <div className="relative inline-flex items-center justify-center mb-4">
             <div className="w-28 h-28 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
               <FaCheckCircle className="text-6xl text-green-500" />
             </div>
-            {/* Vòng trang trí */}
-            <div className="absolute inset-0 rounded-full border-4 border-green-200 dark:border-green-800 animate-ping opacity-30" />
-          </div>
-
-          <div className="flex justify-center gap-2 text-2xl mb-3">
-            🎉 🛍️ 🎊
+            <div className="absolute inset-0 rounded-full border-4 border-green-200 animate-ping opacity-30" />
           </div>
 
           <h1 className="text-4xl font-bold text-green-500 mb-2">
             Đặt hàng thành công!
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+
+          <p className="text-gray-500">
             Cảm ơn bạn đã mua hàng tại{" "}
             <span className="font-bold text-primary">Shopsy</span>
           </p>
-          <p className="text-gray-400 text-sm mt-1">
+
+          <p className="text-sm mt-1">
             Mã đơn hàng:{" "}
-            <span className="font-bold text-primary text-base">#{order?.id}</span>
+            <span className="font-bold text-primary">#{order?.id}</span>
           </p>
         </div>
 
-        {/* ── Tracking steps ── */}
+        {/* TRACKING */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm mb-4">
           <div className="flex items-center justify-between relative">
-            {/* Line */}
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 dark:bg-gray-700 z-0" />
+            <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-200 z-0" />
 
             {[
-              { icon: FaReceipt,     label: "Đã đặt",        active: true  },
-              { icon: FaBox,         label: "Đang chuẩn bị", active: false },
-              { icon: FaTruck,       label: "Đang giao",      active: false },
-              { icon: FaHome,        label: "Đã nhận",        active: false },
+              { icon: FaReceipt, label: "Đã đặt", active: true },
+              { icon: FaBox, label: "Chuẩn bị", active: false },
+              { icon: FaTruck, label: "Đang giao", active: false },
+              { icon: FaHome, label: "Đã nhận", active: false },
             ].map((step, i) => (
               <div key={i} className="flex flex-col items-center gap-2 z-10">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition ${
-                  step.active
-                    ? "bg-gradient-to-br from-primary to-secondary text-white"
-                    : "bg-gray-100 dark:bg-gray-700 text-gray-400"
-                }`}>
-                  <step.icon className="text-sm" />
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    step.active
+                      ? "bg-primary text-white"
+                      : "bg-gray-100 text-gray-400"
+                  }`}
+                >
+                  <step.icon />
                 </div>
-                <span className={`text-xs font-medium ${
-                  step.active ? "text-primary" : "text-gray-400"
-                }`}>
-                  {step.label}
-                </span>
+                <span className="text-xs">{step.label}</span>
               </div>
             ))}
           </div>
@@ -102,141 +138,98 @@ const OrderSuccess = () => {
 
         {order && (
           <div className="space-y-4">
-
-            {/* ── Trạng thái ── */}
-            <div className={`rounded-2xl p-4 flex items-center gap-3 ${sc.bg} dark:bg-opacity-10`}>
-              <span className="text-2xl">{sc.icon}</span>
+            {/* STATUS */}
+            <div className={`rounded-2xl p-4 flex items-center gap-3 ${sc.bg}`}>
+              <StatusIcon className={`text-xl ${sc.color}`} />
               <div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">Trạng thái đơn hàng</p>
-                <p className={`font-bold text-base ${sc.color}`}>{sc.label}</p>
+                <p className="text-xs text-gray-500">Trạng thái đơn hàng</p>
+                <p className={`font-bold ${sc.color}`}>{sc.label}</p>
               </div>
             </div>
 
-            {/* ── Thông tin giao hàng ── */}
+            {/* SHIPPING */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
               <h2 className="font-bold mb-4 flex items-center gap-2">
-                🏠 Thông tin giao hàng
+                <FaHome /> Thông tin giao hàng
               </h2>
+
               <div className="grid grid-cols-2 gap-3 text-sm">
-                <div>
-                  <p className="text-gray-400 text-xs mb-0.5">Người nhận</p>
-                  <p className="font-medium">{order.name}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-xs mb-0.5">Số điện thoại</p>
-                  <p className="font-medium">{order.phone}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-xs mb-0.5">Email</p>
-                  <p className="font-medium">{order.email}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 text-xs mb-0.5">Thanh toán</p>
-                  <p className="font-medium">
-                    {order.payment_method === "cod" ? "💵 COD" : "🏦 Chuyển khoản"}
-                  </p>
-                </div>
-                <div className="col-span-2">
-                  <p className="text-gray-400 text-xs mb-0.5">Địa chỉ</p>
-                  <p className="font-medium">{order.address}</p>
-                </div>
-                {order.note && (
-                  <div className="col-span-2">
-                    <p className="text-gray-400 text-xs mb-0.5">Ghi chú</p>
-                    <p className="font-medium italic text-gray-500">{order.note}</p>
-                  </div>
-                )}
+                <p>{order.name}</p>
+                <p>{order.phone}</p>
+                <p>{order.email}</p>
+                <p>
+                  {order.payment_method === "cod" ? (
+                    <span className="flex items-center gap-1">
+                      <FaMoneyBillWave /> COD
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-1">
+                      <FaUniversity /> Chuyển khoản
+                    </span>
+                  )}
+                </p>
+                <p className="col-span-2">{order.address}</p>
               </div>
             </div>
 
-            {/* ── Sản phẩm ── */}
+            {/* PRODUCTS */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm">
               <h2 className="font-bold mb-4 flex items-center gap-2">
-                📦 Sản phẩm đã đặt ({order.items?.length})
+                <FaBox /> Sản phẩm ({order.items?.length})
               </h2>
-              <div className="space-y-3">
-                {order.items?.map((item) => (
-                  <div key={item.id}
-                       className="flex items-center gap-3 py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
-                    {/* Ảnh */}
+
+              {order.items?.map((item) => (
+                <div key={item.id} className="flex justify-between py-2">
+                  <div className="flex gap-3">
                     {getImageUrl(item.product_image) ? (
                       <img
                         src={getImageUrl(item.product_image)}
-                        alt={item.product_name}
-                        className="w-14 h-14 object-cover rounded-xl flex-shrink-0 border border-gray-100"
+                        className="w-14 h-14 rounded-xl"
                       />
                     ) : (
-                      <div className="w-14 h-14 bg-gray-100 dark:bg-gray-700 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
-                        📦
+                      <div className="w-14 h-14 flex items-center justify-center bg-gray-200 rounded-xl">
+                        <FaBox />
                       </div>
                     )}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">{item.product_name}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {Number(item.price).toLocaleString("vi-VN")}đ × {item.quantity}
-                      </p>
+                    <div>
+                      <p>{item.product_name}</p>
+                      <p className="text-xs text-gray-500">x{item.quantity}</p>
                     </div>
-                    <p className="text-sm font-bold text-primary flex-shrink-0">
-                      {Number(item.subtotal).toLocaleString("vi-VN")}đ
-                    </p>
                   </div>
-                ))}
-              </div>
 
-              {/* Tổng tiền */}
-              <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Tạm tính</span>
-                  <span>{Number(order.subtotal).toLocaleString("vi-VN")}đ</span>
+                  <p className="text-primary font-bold">
+                    {Number(item.subtotal).toLocaleString("vi-VN")}đ
+                  </p>
                 </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Phí vận chuyển</span>
-                  <span className={order.shipping_fee == 0 ? "text-green-500 font-medium" : ""}>
-                    {order.shipping_fee == 0
-                      ? "Miễn phí"
-                      : `${Number(order.shipping_fee).toLocaleString("vi-VN")}đ`}
-                  </span>
-                </div>
-                <div className="flex justify-between font-bold text-lg pt-1 border-t border-gray-100 dark:border-gray-700">
-                  <span>Tổng cộng</span>
-                  <span className="text-primary">
-                    {Number(order.total).toLocaleString("vi-VN")}đ
-                  </span>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* ── Thông báo ── */}
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-4 text-sm text-blue-600 dark:text-blue-400 flex items-start gap-3">
-              <span className="text-xl flex-shrink-0">ℹ️</span>
-              <div>
-                <p className="font-medium mb-1">Thông tin quan trọng</p>
-                <p className="text-blue-500 dark:text-blue-400 leading-relaxed">
-                  Chúng tôi sẽ liên hệ với bạn qua số điện thoại{" "}
-                  <span className="font-semibold">{order.phone}</span>{" "}
-                  để xác nhận đơn hàng trong vòng 24 giờ.
-                </p>
-              </div>
+            {/* INFO */}
+            <div className="bg-blue-50 rounded-2xl p-4 flex gap-3 text-blue-600">
+              <FaInfoCircle />
+              <p>Chúng tôi sẽ gọi xác nhận đơn hàng trong 24h.</p>
             </div>
-
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row gap-3 mt-6">
+        {/* ACTION */}
+        <div className="flex gap-3 mt-6">
           <Link
             to="/"
-            className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-full font-medium hover:opacity-90 transition text-center"
+            className="flex-1 bg-primary text-white py-3 rounded-full flex items-center justify-center gap-2"
           >
-            🛍️ Tiếp tục mua sắm
+            <FaShoppingBag />
+            Mua tiếp
           </Link>
+
           <Link
             to="/orders"
-            className="flex-1 border-2 border-primary text-primary py-3 rounded-full font-medium hover:bg-primary hover:text-white transition text-center"
+            className="flex-1 border border-primary text-primary py-3 rounded-full flex items-center justify-center gap-2"
           >
-            📦 Xem đơn hàng của tôi
+            <FaBox />
+            Đơn hàng
           </Link>
         </div>
-
       </div>
     </div>
   );

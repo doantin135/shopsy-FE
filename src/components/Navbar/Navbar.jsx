@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import Logo from "../../assets/logo.png";
 import { IoMdSearch } from "react-icons/io";
 import { FaCartShopping } from "react-icons/fa6";
-import { FaCaretDown, FaUserCircle, FaHeart } from "react-icons/fa";
+import {
+  FaCaretDown,
+  FaUserCircle,
+  FaHeart,
+  FaUser,
+  FaBoxOpen,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import DarkMode from "./DarkMode";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,8 +34,9 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { totalItems } = useCart();
-  const [keyword, setKeyword] = useState("");
   const { totalWishlist } = useWishlist();
+
+  const [keyword, setKeyword] = useState("");
 
   const handleLogout = async () => {
     await logout();
@@ -47,19 +55,21 @@ const Navbar = () => {
 
   return (
     <div className="shadow-md bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
+      {/* Top bar */}
       <div className="bg-primary/40 py-2">
         <div className="container flex justify-between items-center">
-          <div>
-            <Link
-              to="/"
-              className="font-bold text-2xl sm:text-3xl flex gap-2 items-center"
-            >
-              <img src={Logo} alt="Logo" className="w-10" />
-              Shopsy
-            </Link>
-          </div>
+          {/* Logo */}
+          <Link
+            to="/"
+            className="font-bold text-2xl sm:text-3xl flex gap-2 items-center"
+          >
+            <img src={Logo} alt="Logo" className="w-10" />
+            Shopsy
+          </Link>
 
+          {/* Right section */}
           <div className="flex items-center gap-4">
+            {/* Search */}
             <form
               onSubmit={handleSearch}
               className="relative group hidden sm:block"
@@ -69,7 +79,7 @@ const Navbar = () => {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="Tìm kiếm..."
-                className="w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-2 py-1 focus:outline-none focus:border-primary dark:border-gray-500 dark:bg-gray-800"
+                className="w-[200px] group-hover:w-[300px] transition-all duration-300 rounded-full border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:border-primary dark:border-gray-500 dark:bg-gray-800"
               />
               <button
                 type="submit"
@@ -79,14 +89,14 @@ const Navbar = () => {
               </button>
             </form>
 
+            {/* Cart */}
             <Link
               to="/cart"
-              className="bg-gradient-to-r from-primary to-secondary transition-all duration-200 text-white py-1 px-4 rounded-full flex items-center gap-3 group relative"
+              className="bg-gradient-to-r from-primary to-secondary text-white py-1.5 px-4 rounded-full flex items-center gap-2 relative"
             >
-              <span className="group-hover:block hidden transition-all duration-200">
-                Giỏ hàng
-              </span>
-              <FaCartShopping className="text-xl text-white drop-shadow-sm cursor-pointer" />
+              <FaCartShopping className="text-lg" />
+              <span className="hidden sm:block text-sm">Giỏ hàng</span>
+
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
                   {totalItems > 99 ? "99+" : totalItems}
@@ -94,6 +104,7 @@ const Navbar = () => {
               )}
             </Link>
 
+            {/* Wishlist */}
             <Link
               to="/wishlist"
               className="relative text-gray-600 dark:text-gray-300 hover:text-red-500 transition"
@@ -108,6 +119,7 @@ const Navbar = () => {
 
             <DarkMode />
 
+            {/* User */}
             {user ? (
               <div className="relative group">
                 {/* Avatar */}
@@ -115,9 +127,9 @@ const Navbar = () => {
                   {user.photoURL ? (
                     <img
                       src={user.photoURL}
-                      className="w-8 h-8 rounded-full border-2 border-primary"
                       alt="avatar"
                       referrerPolicy="no-referrer"
+                      className="w-8 h-8 rounded-full border-2 border-primary"
                     />
                   ) : (
                     <FaUserCircle className="text-2xl text-primary" />
@@ -127,7 +139,8 @@ const Navbar = () => {
                   </span>
                 </div>
 
-                <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
+                {/* Dropdown */}
+                <div className="absolute right-0 top-full pt-2 w-52 hidden group-hover:block z-50">
                   <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700">
                     <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                       <p className="text-xs text-gray-400">Đã đăng nhập</p>
@@ -135,23 +148,26 @@ const Navbar = () => {
                         {user.displayName || user.email}
                       </p>
                     </div>
+
                     <Link
                       to="/profile"
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center gap-2"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                     >
-                      👤 Trang cá nhân
+                      <FaUser /> Trang cá nhân
                     </Link>
+
                     <Link
                       to="/orders"
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition flex items-center gap-2"
+                      className="flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                     >
-                      📦 Đơn hàng của tôi
+                      <FaBoxOpen /> Đơn hàng của tôi
                     </Link>
+
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 rounded-b-xl transition"
+                      className="flex items-center gap-2 w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-gray-700 rounded-b-xl transition"
                     >
-                      Đăng xuất
+                      <FaSignOutAlt /> Đăng xuất
                     </button>
                   </div>
                 </div>
@@ -159,7 +175,7 @@ const Navbar = () => {
             ) : (
               <Link
                 to="/login"
-                className="text-sm font-medium text-primary border border-primary px-4 py-1 rounded-full hover:bg-primary hover:text-white transition duration-200"
+                className="text-sm font-medium text-primary border border-primary px-4 py-1.5 rounded-full hover:bg-primary hover:text-white transition"
               >
                 Đăng nhập
               </Link>
@@ -168,34 +184,36 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div data-aos="zoom-in" className="flex justify-center">
-        <ul className="sm:flex hidden items-center gap-4">
-          
-          {Menu.map((data) => (
-            <li key={data.id}>
+      {/* Menu */}
+      <div className="flex justify-center">
+        <ul className="hidden sm:flex items-center gap-4">
+          {Menu.map((item) => (
+            <li key={item.id}>
               <Link
-                to={data.link}
-                className="inline-block px-4 hover:text-primary duration-200"
+                to={item.link}
+                className="inline-block px-4 py-2 hover:text-primary transition"
               >
-                {data.name}
+                {item.name}
               </Link>
             </li>
           ))}
 
+          {/* Dropdown */}
           <li className="group relative cursor-pointer">
-            <Link to="/" className="flex items-center gap-[2px] py-2">
+            <div className="flex items-center gap-1 py-2">
               Trending Products
-              <FaCaretDown className="transition-all duration-200 group-hover:rotate-180" />
-            </Link>
-            <div className="absolute z-[9999] hidden group-hover:block w-[200px] rounded-md bg-white dark:bg-gray-800 p-2 text-black dark:text-white shadow-md">
+              <FaCaretDown className="transition group-hover:rotate-180" />
+            </div>
+
+            <div className="absolute hidden group-hover:block w-[200px] bg-white dark:bg-gray-800 rounded-md shadow-md p-2 z-[9999]">
               <ul>
-                {DropdownLinks.map((data) => (
-                  <li key={data.id}>
+                {DropdownLinks.map((item) => (
+                  <li key={item.id}>
                     <Link
-                      to={data.link}
-                      className="inline-block w-full rounded-md p-2 hover:bg-primary/20"
+                      to={item.link}
+                      className="block p-2 rounded-md hover:bg-primary/20"
                     >
-                      {data.name}
+                      {item.name}
                     </Link>
                   </li>
                 ))}

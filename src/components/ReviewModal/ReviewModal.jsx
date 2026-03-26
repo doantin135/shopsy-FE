@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { FaStar } from "react-icons/fa";
+import { FaStar, FaTimes, FaBoxOpen, FaPaperPlane } from "react-icons/fa";
 import { reviewApi } from "../../api/index";
 import { useAuth } from "../../context/AuthContext";
 import PropTypes from "prop-types";
 
 const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
   const { user } = useAuth();
+
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [comment, setComment] = useState("");
@@ -14,9 +15,14 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (rating === 0) return setError("Vui lòng chọn số sao!");
+
+    if (rating === 0) {
+      return setError("Vui lòng chọn số sao!");
+    }
+
     setLoading(true);
     setError("");
+
     try {
       await reviewApi.create({
         product_id: product.product_id,
@@ -26,6 +32,7 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
         rating,
         comment,
       });
+
       onSuccess();
     } catch (err) {
       setError(
@@ -49,15 +56,17 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
             onClick={onClose}
             className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center hover:bg-gray-200 transition"
           >
-            ✕
+            <FaTimes />
           </button>
         </div>
-        
+
+        {/* Product */}
         <div className="flex items-center gap-3 mb-5 p-3 bg-gray-50 dark:bg-gray-700 rounded-xl">
-          <span className="text-2xl">📦</span>
+          <FaBoxOpen className="text-xl text-primary" />
           <p className="font-medium text-sm">{product.product_name}</p>
         </div>
 
+        {/* Error */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-600 text-sm rounded-xl px-4 py-3 mb-4">
             {error}
@@ -65,10 +74,12 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
         )}
 
         <form onSubmit={handleSubmit}>
+          {/* Rating */}
           <div className="mb-5">
             <label className="block text-sm font-medium mb-3">
               Chất lượng sản phẩm <span className="text-red-500">*</span>
             </label>
+
             <div className="flex items-center gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -87,6 +98,7 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
                   />
                 </button>
               ))}
+
               {rating > 0 && (
                 <span className="text-sm text-gray-500 ml-2">
                   {
@@ -99,8 +111,10 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
             </div>
           </div>
 
+          {/* Comment */}
           <div className="mb-5">
             <label className="block text-sm font-medium mb-2">Nhận xét</label>
+
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -109,26 +123,32 @@ const ReviewModal = ({ product, orderId, onClose, onSuccess }) => {
               maxLength={1000}
               className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary transition resize-none"
             />
+
             <p className="text-xs text-gray-400 text-right mt-1">
               {comment.length}/1000
             </p>
           </div>
 
+          {/* Actions */}
           <div className="flex gap-3">
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-full font-medium hover:opacity-90 transition disabled:opacity-60"
+              className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-secondary text-white py-3 rounded-full font-medium hover:opacity-90 transition disabled:opacity-60"
             >
               {loading ? (
-                <span className="flex items-center justify-center gap-2">
+                <>
                   <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   Đang gửi...
-                </span>
+                </>
               ) : (
-                "⭐ Gửi đánh giá"
+                <>
+                  <FaPaperPlane />
+                  Gửi đánh giá
+                </>
               )}
             </button>
+
             <button
               type="button"
               onClick={onClose}

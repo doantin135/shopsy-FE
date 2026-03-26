@@ -4,6 +4,15 @@ import { useAuth } from "../context/AuthContext";
 import { orderApi, reviewApi } from "../api/index";
 import ReviewModal from "../components/ReviewModal/ReviewModal";
 
+import {
+  FaBox,
+  FaMoneyBillWave,
+  FaUniversity,
+  FaStar,
+  FaCheckCircle,
+  FaChevronDown,
+} from "react-icons/fa";
+
 const statusMap = {
   pending: {
     label: "Chờ xác nhận",
@@ -33,8 +42,22 @@ const statusMap = {
 };
 
 const paymentMap = {
-  cod: "💵 COD",
-  bank: "🏦 Chuyển khoản",
+  cod: (
+    <span className="flex items-center gap-1">
+      <FaMoneyBillWave /> COD
+    </span>
+  ),
+  bank: (
+    <span className="flex items-center gap-1">
+      <FaUniversity /> Chuyển khoản
+    </span>
+  ),
+};
+
+const getImageUrl = (image) => {
+  if (!image) return "https://placehold.co/60x60?text=No+Image";
+  if (image.startsWith("http")) return image;
+  return `http://127.0.0.1:8000/storage/${image}`;
 };
 
 const OrderHistory = () => {
@@ -52,7 +75,6 @@ const OrderHistory = () => {
     const newId = expanded === order.id ? null : order.id;
     setExpanded(newId);
 
-    // Kiểm tra từng sản phẩm đã review chưa
     if (newId && order.status === "delivered") {
       const checks = await Promise.all(
         order.items.map((item) =>
@@ -68,16 +90,17 @@ const OrderHistory = () => {
             })),
         ),
       );
+
       const map = {};
       checks.forEach((c) => {
         map[c.key] = c.reviewed;
       });
+
       setReviewedItems((prev) => ({ ...prev, ...map }));
     }
   };
 
   useEffect(() => {
-    
     if (!user) {
       navigate("/login");
       return;
@@ -95,7 +118,7 @@ const OrderHistory = () => {
       });
   }, [user, navigate]);
 
-  // ── Loading ──
+  // Loading
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -107,7 +130,7 @@ const OrderHistory = () => {
     );
   }
 
-  // ── Error ──
+  // Error
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -145,7 +168,9 @@ const OrderHistory = () => {
 
         {orders.length === 0 ? (
           <div className="text-center py-20 bg-white dark:bg-gray-800 rounded-2xl">
-            <div className="text-6xl mb-4">📦</div>
+            <div className="text-6xl mb-4 flex justify-center text-gray-300">
+              <FaBox />
+            </div>
             <h3 className="text-xl font-bold text-gray-500 mb-2">
               Chưa có đơn hàng nào
             </h3>
@@ -164,37 +189,29 @@ const OrderHistory = () => {
                 key={order.id}
                 className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm overflow-hidden"
               >
-                {/* ── Header đơn hàng ── */}
+                {/* Header */}
                 <div
                   className="flex items-center justify-between p-5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                   onClick={() => handleExpand(order)}
                 >
-                  <div className="flex items-center gap-4">
-                    {/* Order ID */}
-                    <div>
-                      <p className="font-bold text-base">Đơn #{order.id}</p>
-                      <p className="text-xs text-gray-500 mt-0.5">
-                        {new Date(order.created_at).toLocaleDateString(
-                          "vi-VN",
-                          {
-                            day: "2-digit",
-                            month: "2-digit",
-                            year: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
-                        )}
-                      </p>
-                    </div>
+                  <div>
+                    <p className="font-bold text-base">Đơn #{order.id}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      {new Date(order.created_at).toLocaleDateString("vi-VN", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
                   </div>
 
                   <div className="flex items-center gap-4">
-                    {/* Tổng tiền */}
                     <p className="font-bold text-primary text-lg hidden sm:block">
                       {Number(order.total).toLocaleString("vi-VN")}đ
                     </p>
 
-                    {/* Status badge */}
                     <span
                       className={`flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${statusMap[order.status]?.color}`}
                     >
@@ -204,146 +221,95 @@ const OrderHistory = () => {
                       {statusMap[order.status]?.label}
                     </span>
 
-                    {/* Arrow */}
-                    <span
-                      className={`text-gray-400 transition-transform duration-200 ${expanded === order.id ? "rotate-180" : ""}`}
-                    >
-                      ▼
-                    </span>
+                    <FaChevronDown
+                      className={`text-gray-400 transition-transform duration-200 ${
+                        expanded === order.id ? "rotate-180" : ""
+                      }`}
+                    />
                   </div>
                 </div>
 
-                {/* ── Chi tiết đơn hàng (accordion) ── */}
+                {/* Detail */}
                 {expanded === order.id && (
-                  <div className="border-t border-gray-100 dark:border-gray-700 p-5 space-y-5">
-                    {/* Thông tin giao hàng */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-1.5">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                  <div className="border-t p-5 space-y-5">
+                    {/* Info */}
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-1">
+                        <p className="text-xs font-semibold text-gray-500 mb-2">
                           Thông tin giao hàng
                         </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Người nhận:</span>{" "}
-                          {order.name}
-                        </p>
-                        <p className="text-sm">
-                          <span className="font-medium">SĐT:</span>{" "}
-                          {order.phone}
-                        </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Email:</span>{" "}
-                          {order.email}
-                        </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Địa chỉ:</span>{" "}
-                          {order.address}
-                        </p>
-                        {order.note && (
-                          <p className="text-sm">
-                            <span className="font-medium">Ghi chú:</span>{" "}
-                            {order.note}
-                          </p>
-                        )}
+                        <p>{order.name}</p>
+                        <p>{order.phone}</p>
+                        <p>{order.email}</p>
+                        <p>{order.address}</p>
                       </div>
 
-                      <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-1.5">
-                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+                      <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-1">
+                        <p className="text-xs font-semibold text-gray-500 mb-2">
                           Thanh toán
                         </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Phương thức:</span>{" "}
-                          {paymentMap[order.payment_method]}
-                        </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Tạm tính:</span>{" "}
-                          {Number(order.subtotal).toLocaleString("vi-VN")}đ
-                        </p>
-                        <p className="text-sm">
-                          <span className="font-medium">Phí ship:</span>{" "}
-                          {order.shipping_fee == 0 ? (
-                            <span className="text-green-500">Miễn phí</span>
-                          ) : (
-                            `${Number(order.shipping_fee).toLocaleString("vi-VN")}đ`
-                          )}
-                        </p>
-                        <p className="text-sm font-bold text-primary">
-                          Tổng: {Number(order.total).toLocaleString("vi-VN")}đ
+                        <p>{paymentMap[order.payment_method]}</p>
+                        <p>
+                          Tổng:{" "}
+                          <span className="text-primary font-bold">
+                            {Number(order.total).toLocaleString("vi-VN")}đ
+                          </span>
                         </p>
                       </div>
                     </div>
 
-                    {/* Danh sách sản phẩm */}
-                    <div>
-                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
-                        Sản phẩm đã đặt ({order.items?.length})
-                      </p>
-                      <div className="space-y-2">
-                        {order.items?.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0"
-                          >
-                            <div className="flex items-center gap-3">
-                              
-                              {item.product_image ? (
-                                <img
-                                  src={
-                                    item.product_image.startsWith("http")
-                                      ? item.product_image
-                                      : `http://127.0.0.1:8000/storage/${item.product_image}`
-                                  }
-                                  alt={item.product_name}
-                                  className="w-12 h-12 object-cover rounded-xl flex-shrink-0 border border-gray-100"
-                                />
-                              ) : (
-                                <div className="w-12 h-12 bg-gray-100 dark:bg-gray-600 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
-                                  📦
-                                </div>
-                              )}
-                              <div>
-                                <p className="text-sm font-medium">
-                                  {item.product_name}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {Number(item.price).toLocaleString("vi-VN")}đ
-                                  × {item.quantity}
-                                </p>
+                    {/* Products */}
+                    <div className="space-y-2">
+                      {order.items?.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-3">
+                            {item.product_image ? (
+                              <img
+                                src={getImageUrl(item.product_image)}
+                                className="w-12 h-12 rounded-xl"
+                              />
+                            ) : (
+                              <div className="w-12 h-12 flex items-center justify-center bg-gray-200 rounded-xl">
+                                <FaBox />
                               </div>
+                            )}
+                            <div>
+                              <p>{item.product_name}</p>
+                              <p className="text-xs text-gray-500">
+                                x{item.quantity}
+                              </p>
                             </div>
-                            <p className="text-sm font-bold text-primary">
-                              {Number(item.subtotal).toLocaleString("vi-VN")}đ
-                            </p>
-
-                            {order.status === "delivered" &&
-                              (reviewedItems[
-                                `${order.id}_${item.product_id}`
-                              ] ? (
-                                <span className="text-xs text-green-500 font-medium flex items-center gap-1">
-                                  ✅ Đã đánh giá
-                                </span>
-                              ) : (
-                                <button
-                                  onClick={() =>
-                                    setReviewModal({
-                                      product: item,
-                                      orderId: order.id,
-                                    })
-                                  }
-                                  className="text-xs bg-primary/10 text-primary px-3 py-1.5 rounded-full hover:bg-primary hover:text-white transition font-medium"
-                                >
-                                  ⭐ Đánh giá
-                                </button>
-                              ))}
                           </div>
-                        ))}
-                      </div>
+
+                          {order.status === "delivered" &&
+                            (reviewedItems[`${order.id}_${item.product_id}`] ? (
+                              <span className="text-green-500 flex items-center gap-1 text-xs">
+                                <FaCheckCircle /> Đã đánh giá
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() =>
+                                  setReviewModal({
+                                    product: item,
+                                    orderId: order.id,
+                                  })
+                                }
+                                className="text-xs flex items-center gap-1 text-primary"
+                              >
+                                <FaStar /> Đánh giá
+                              </button>
+                            ))}
+                        </div>
+                      ))}
                     </div>
 
-                    {/* Nút xem chi tiết */}
                     <div className="flex justify-end">
                       <Link
                         to={`/order-success/${order.id}`}
-                        className="text-sm text-primary border border-primary px-4 py-2 rounded-full hover:bg-primary hover:text-white transition"
+                        className="text-sm text-primary"
                       >
                         Xem chi tiết →
                       </Link>
@@ -355,25 +321,26 @@ const OrderHistory = () => {
           </div>
         )}
       </div>
-      {/* Success message */}
+
+      {/* Toast */}
       {successMsg && (
-        <div className="fixed top-5 right-5 z-50 bg-green-500 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-2">
-          oke {successMsg}
+        <div className="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+          <FaCheckCircle />
+          {successMsg}
         </div>
       )}
 
-      {/* Review Modal */}
+      {/* Modal */}
       {reviewModal && (
         <ReviewModal
           product={reviewModal.product}
           orderId={reviewModal.orderId}
           onClose={() => setReviewModal(null)}
           onSuccess={() => {
-            // Cập nhật trạng thái đã review
             const key = `${reviewModal.orderId}_${reviewModal.product.product_id}`;
             setReviewedItems((prev) => ({ ...prev, [key]: true }));
             setReviewModal(null);
-            setSuccessMsg("Đánh giá thành công! Cảm ơn bạn.");
+            setSuccessMsg("Đánh giá thành công!");
             setTimeout(() => setSuccessMsg(""), 3000);
           }}
         />
